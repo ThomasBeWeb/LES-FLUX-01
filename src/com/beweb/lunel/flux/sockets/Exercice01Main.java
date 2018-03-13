@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import static java.lang.System.out;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 /**
  *
@@ -21,6 +22,12 @@ import java.net.Socket;
 public class Exercice01Main {
 
     public static void main(String[] args) throws IOException {
+        
+        
+        // objet capturant le flux de System.in
+        Scanner scanner = new Scanner(System.in);
+        
+        String reponse = "";
         
         // Socket spéciale serveur ecoute sur 127.0.0.1:4000
         ServerSocket server = new ServerSocket(4000);
@@ -42,16 +49,22 @@ public class Exercice01Main {
         
         // tant que le client ne retourne pas "q" on lit les messages des clients
         while(!(ligne = in.readLine()).contentEquals("q")) {
-        System.out.println(ligne);
+            System.out.println(ligne);
+
+//            if(scanner.hasNext()){
+//                reponse = scanner.nextLine();
+//                out.println(reponse);
+//                out.flush();
+//            }
         }
         
         // fermeture des canaux
         out.println("Vous allez être déconnecté");
         out.flush();
         in.close();
-        server.close();
-        in.close();
         client.close();
+        server.close();
+        scanner.close();
     }
     
 }

@@ -5,7 +5,9 @@
  */
 package com.beweb.lunel.flux.sockets;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
@@ -23,6 +25,7 @@ public class ExerciceMain02 {
         
         String ip = "";
         int port = 0;
+        String message ="";
         
         // objet capturant le flux de System.in
         Scanner scanner = new Scanner(System.in);
@@ -46,22 +49,33 @@ public class ExerciceMain02 {
         // objet PrintWriter pour plus de convivialité
         PrintWriter out = new PrintWriter(s.getOutputStream());
         
-        // hasNext est bloquant tant que le flux n'est pas reçu par l'objet
-        while(scanner.hasNext()){
-            // on stocke le flux dans une variable
-            String message = scanner.nextLine();
-            // si le caractère "q" est reçu on sort du while
-            if(message.contentEquals("q")){
-                break;
-            }else{
-                // message dans le tampon de sortie
-                out.println(message);
-                // envoi du message
-                out.flush();
-                // fermeture du flux
-                out.close();
+        BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        
+        
+        String response = "";
+        
+        while (!(response = in.readLine()).contentEquals("q")) {
+            System.out.println(response);
+            
+            // hasNext est bloquant tant que le flux n'est pas reçu par l'objet
+            if(scanner.hasNext()){
+                // on stocke le flux dans une variable
+                message = scanner.nextLine();
+                // si le caractère "q" est reçu on sort du while
+                if(message.contentEquals("q")){
+                    break;
+                }else{
+                    // message dans le tampon de sortie
+                    out.println(message);
+                    // envoi du message
+                    out.flush();
+                    // fermeture du flux
+                    
+                }
             }
         }
+        
+        
 
         s.close();
         scanner.close();
